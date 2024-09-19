@@ -68,11 +68,31 @@ JSON.parse(localStorage.getItem('cartItems')).map(data=>{
     }else{
         JSON.parse(localStorage.getItem('cartItems')).map(data=>{
             let totalPrice = data.price * data.quantity;
-            tableData += '<tr><th>' + data.id + '</th><th>' + data.name + '</th><th>' + data.quantity + '</th><th>' + data.price * data.quantity + '</th></tr>';
+            tableData += '<tr><th>' + data.id + '</th><th>' + data.name + '</th><th>' + data.quantity + '</th><th class="prices">' + totalPrice + '</th><th><a href="#" onclick=Delete(this);>Törlés</a></th></tr>';
         })
     }
+    let totalSum = 0;
+    JSON.parse(localStorage.getItem('cartItems')).map(data=>{
+        totalSum += data.price * data.quantity;
+    })
+    tableData += '<tr><th colspan="3">Teljes Ár:</th><th>' + totalSum + '</th><th><a href="#" onclick=DeleteAll()>Minden törlése</a></th><th><a href="#" onclick=Order()>Rendelés</a></th></tr>';
 
+    function DeleteAll(){
+        localStorage.clear();
+        window.location.reload();
+    }
 
+    function Delete(row){
+        let data = JSON.parse(localStorage.getItem('cartItems'));
+        data.map((item, index)=>{
+            if(item.id == row.parentNode.parentNode.firstChild.innerHTML){
+                data.splice(index, 1);
+            }
+    })
+
+        localStorage.setItem('cartItems', JSON.stringify(data));
+        window.location.reload();
+    }
 
     cartBoxTable .innerHTML = tableData;
 }
