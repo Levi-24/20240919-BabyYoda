@@ -51,4 +51,28 @@ window.onload = function(){
         }
       });
     }
+
+const cartIconCounter = document.querySelector('.kosarikon p');
+let totalQuantity = 0;
+JSON.parse(localStorage.getItem('cartItems')).map(data=>{
+    totalQuantity += data.quantity;
+})
+    cartIconCounter.innerHTML = totalQuantity;
+
+    const cartBoxTable = document.querySelector('table');
+    let tableData = '';
+    tableData += '    <tr><th>Termék ID</th><th>Termék Név</th><th>Termék Mennyiség</th><th>Termék Ár</th><th></th><th></th></tr>';
+
+    if(JSON.parse(localStorage.getItem('cartItems'))[0] === null){
+        tableData += '<tr><td colspan="5"></td></tr>';
+    }else{
+        JSON.parse(localStorage.getItem('cartItems')).map(data=>{
+            let totalPrice = data.price * data.quantity;
+            tableData += '<tr><th>' + data.id + '</th><th>' + data.name + '</th><th>' + data.quantity + '</th><th>' + data.price * data.quantity + '</th></tr>';
+        })
+    }
+
+
+
+    cartBoxTable .innerHTML = tableData;
 }
